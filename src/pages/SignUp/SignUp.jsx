@@ -3,16 +3,17 @@ import img from "../../assets/images/login/login.svg";
 import { useContext } from "react";
 import { AuthContext } from "../../providers/AuthProvider";
 
-const Login = () => {
-  const { signInUser } = useContext(AuthContext);
+const SignUp = () => {
+  const { createUser } = useContext(AuthContext);
 
-  const handleLogin = (e) => {
+  const handleSignUp = (e) => {
     e.preventDefault();
     const form = e.target;
+    const name = form.name.value;
     const email = form.email.value;
     const password = form.password.value;
 
-    signInUser(email, password)
+    createUser(email, password)
       .then((result) => {
         console.log(result.user);
       })
@@ -29,8 +30,20 @@ const Login = () => {
         </div>
 
         <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-          <form onSubmit={handleLogin} className="card-body">
-            <h1 className="text-5xl font-bold">Login now!</h1>
+          <form onSubmit={handleSignUp} className="card-body">
+            <h1 className="text-5xl font-bold">SignUp now!</h1>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Name</span>
+              </label>
+              <input
+                type="text"
+                name="name"
+                placeholder="Name"
+                className="input input-bordered"
+                required
+              />
+            </div>
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Email</span>
@@ -61,13 +74,17 @@ const Login = () => {
               </label>
             </div>
             <div className="form-control mt-6">
-              <input className="btn btn-primary" type="submit" value="Login" />
+              <input
+                className="btn btn-primary"
+                type="submit"
+                value="Sign Up"
+              />
             </div>
           </form>
-          <p className="text-center my-6">
-            New to car doctors?{" "}
-            <Link className="text-orange-500 font-bold" to="/signup">
-              Please SignUp
+          <p className="my-6 text-center">
+            Already have an account?{" "}
+            <Link className="text-orange-500 font-bold" to="/login">
+              Please Login
             </Link>
           </p>
         </div>
@@ -76,4 +93,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;
