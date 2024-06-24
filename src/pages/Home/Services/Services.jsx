@@ -7,7 +7,9 @@ const Services = () => {
   // const [services, setServices] = useState([]);
 
   // useEffect(() => {
-  //   fetch("http://localhost:3000/services")
+  //   fetch("http://localhost:3000/services?sort=${
+  // asc ? "asc" : "desc"
+  // }&minPrice=${minPrice}&maxPrice=${maxPrice}")
   //     .then((res) => res.json())
   //     .then((data) => setServices(data));
   // }, []);
@@ -15,8 +17,16 @@ const Services = () => {
   const [asc, setAsc] = useState(true);
   const [minPrice, setMinPrice] = useState(undefined);
   const [maxPrice, setMaxPrice] = useState(undefined);
+  const [search, setSearch] = useState('');
 
-  const services = useServices(asc, minPrice, maxPrice);
+  const services = useServices(asc, minPrice, maxPrice, search);
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const searchText = e.target.search.value;
+    // console.log(searchText);
+    setSearch(searchText);
+  };
 
   return (
     <div className="my-20">
@@ -29,10 +39,13 @@ const Services = () => {
         </p>
       </div>
       <p>{minPrice}</p>
+      {/* Sort */}
       <button className="btn btn-secondary" onClick={() => setAsc(!asc)}>
         {asc ? "Sort: High to Low" : "Sort: Low to High"}
       </button>
-      <div className="w-1/4 mx-auto my-2">
+
+      {/* Range filter */}
+      <div className="w-1/4 my-2">
         <p>Price Range</p>
         <div className="flex gap-3">
           <input
@@ -51,6 +64,17 @@ const Services = () => {
           />
         </div>
       </div>
+
+      {/* Search */}
+      <form onSubmit={handleSearch}>
+        <input
+          type="text"
+          placeholder="Search Products"
+          className="input input-bordered max-w-1/2"
+          name="search"
+        />
+        <input type="submit" className="btn btn-secondary" value="Search" />
+      </form>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         {services.map((service) => (
